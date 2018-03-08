@@ -1,4 +1,5 @@
-ngo settings for {{ project_name }} project on Heroku. For more info, see:
+"""
+django settings for prisoner project on Heroku. For more info, see:
 https://github.com/heroku/heroku-django-template
 For more information on this file, see
 https://docs.djangoproject.com/en/2.0/topics/settings/
