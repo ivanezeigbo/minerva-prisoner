@@ -1,1 +1,4 @@
 .DS_STORE
+db.sqlite3
+__pycache__/
+__temp_migrations/
