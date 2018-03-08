@@ -3,6 +3,9 @@ import os
 import sys
 
 if __name__ == "__main__":
+    path = './'
+    if path not in sys.path:
+        sys.path.append(path)
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "{{ project_name }}.settings")
     try:
         from django.core.management import execute_from_command_line
