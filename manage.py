@@ -6,8 +6,8 @@ if __name__ == "__main__":
 
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     sys.path.append(BASE_DIR)
-    os.environ['DJANGO_SETTINGS_MODULE'] = 'prisoner.settings'
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "prisoner.settings")
+    os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
