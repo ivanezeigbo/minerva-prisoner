@@ -1,255 +1,134 @@
-import os
-from os import environ
-import dj_database_url
-import otree.settings
-
-
-# if you set a property in SESSION_CONFIG_DEFAULTS, it will be inherited by all configs
-# in SESSION_CONFIGS, except those that explicitly override it.
-# the session config can be accessed from methods in your apps as self.session.config,
-# e.g. self.session.config['participation_fee']
-
-SESSION_CONFIG_DEFAULTS = {
-    'real_world_currency_per_point': 1.00,
-    'participation_fee': 0.00,
-    'doc': "",
-}
-
-SESSION_CONFIGS = [
-                   {
-                   'name': 'prisoner',
-                   'display_name': "Prisoner's Dilemma",
-                   'num_demo_participants': 2,
-                   'app_sequence': ['prisoner'],
-                   },
-    
-
-]
-# see the end of this file for the inactive session configs
-
-
-# ISO-639 code
-# for example: de, fr, ja, ko, zh-hans
-LANGUAGE_CODE = 'en'
-
-# e.g. EUR, GBP, CNY, JPY
-REAL_WORLD_CURRENCY_CODE = 'USD'
-USE_POINTS = True
-
-ROOMS = [
-    {
-        'name': 'econ101',
-        'display_name': 'Econ 101 class',
-        'participant_label_file': '_rooms/econ101.txt',
-    },
-    {
-        'name': 'live_demo',
-        'display_name': 'Room for live demo (no participant labels)',
-    },
-]
-
-
-# AUTH_LEVEL:
-# this setting controls which parts of your site are freely accessible,
-# and which are password protected:
-# - If it's not set (the default), then the whole site is freely accessible.
-# - If you are launching a study and want visitors to only be able to
-#   play your app if you provided them with a start link, set it to STUDY.
-# - If you would like to put your site online in public demo mode where
-#   anybody can play a demo version of your game, but not access the rest
-#   of the admin interface, set it to DEMO.
-
-# for flexibility, you can set it in the environment variable OTREE_AUTH_LEVEL
-AUTH_LEVEL = environ.get('OTREE_AUTH_LEVEL')
-
-ADMIN_USERNAME = 'admin'
-# for security, best to set admin password in an environment variable
-ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')
-
-
-# Consider '', None, and '0' to be empty/false
-DEBUG = (environ.get('OTREE_PRODUCTION') in {None, '', '0'})
-
-DEMO_PAGE_INTRO_HTML = """
-<ul>
-    <li>
-        <a href="https://github.com/oTree-org/otree" target="_blank">
-            oTree on GitHub
-        </a>.
-    </li>
-    <li>
-        <a href="http://www.otree.org/" target="_blank">
-            oTree homepage
-        </a>.
-    </li>
-</ul>
-<p>
-    Here are various games implemented with oTree. These games are all open
-    source, and you can modify them as you wish.
-</p>
+ngo settings for {{ project_name }} project on Heroku. For more info, see:
+https://github.com/heroku/heroku-django-template
+For more information on this file, see
+https://docs.djangoproject.com/en/2.0/topics/settings/
+For the full list of settings and their values, see
+https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
-# don't share this with anybody.
-SECRET_KEY = 'u%tk+a^9_frlos9xv#n7^l9&8jkf3j6(5l#0k@u5-)p^!t$i@@'
+import os
+import dj_database_url
+import django_heroku
+
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = "{{ secret_key }}"
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
+
+# Application definition
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    # Disable Django's own staticfiles handling in favour of WhiteNoise, for
+    # greater consistency between gunicorn and `./manage.py runserver`. See:
+    # http://whitenoise.evans.io/en/stable/django.html#using-whitenoise-in-development
+    'whitenoise.runserver_nostatic',
+    'django.contrib.staticfiles',
+]
+
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+ROOT_URLCONF = 'prisoner.urls'
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+            'debug': DEBUG,
+        },
+    },
+]
+
+WSGI_APPLICATION = 'prisoner.wsgi.application'
+
+
+# Database
+# https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(
-        # Rather than hardcoding the DB parameters here,
-        # it's recommended to set the DATABASE_URL environment variable.
-        # This will allow you to use SQLite locally, and postgres/mysql
-        # on the server
-        # Examples:
-        # export DATABASE_URL=postgres://USER:PASSWORD@HOST:PORT/NAME
-        # export DATABASE_URL=mysql://USER:PASSWORD@HOST:PORT/NAME
-
-        # fall back to SQLite if the DATABASE_URL env var is missing
-        default='sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
 }
 
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
 
-# if an app is included in SESSION_CONFIGS, you don't need to list it here
-INSTALLED_APPS = ['otree']
+# Internationalization
+# https://docs.djangoproject.com/en/2.0/topics/i18n/
 
-# inactive session configs
-### {
-###     'name': 'trust',
-###     'display_name': "Trust Game",
-###     'num_demo_participants': 2,
-###     'app_sequence': ['trust', 'payment_info'],
-### },
-### {
-###     'name': 'prisoner',
-###     'display_name': "Prisoner's Dilemma",
-###     'num_demo_participants': 2,
-###     'app_sequence': ['prisoner', 'payment_info'],
-### },
-### {
-###     'name': 'ultimatum',
-###     'display_name': "Ultimatum (randomized: strategy vs. direct response)",
-###     'num_demo_participants': 2,
-###     'app_sequence': ['ultimatum', 'payment_info'],
-### },
-### {
-###     'name': 'ultimatum_strategy',
-###     'display_name': "Ultimatum (strategy method treatment)",
-###     'num_demo_participants': 2,
-###     'app_sequence': ['ultimatum', 'payment_info'],
-###     'use_strategy_method': True,
-### },
-### {
-###     'name': 'ultimatum_non_strategy',
-###     'display_name': "Ultimatum (direct response treatment)",
-###     'num_demo_participants': 2,
-###     'app_sequence': ['ultimatum', 'payment_info'],
-###     'use_strategy_method': False,
-### },
-### {
-###     'name': 'vickrey_auction',
-###     'display_name': "Vickrey Auction",
-###     'num_demo_participants': 3,
-###     'app_sequence': ['vickrey_auction', 'payment_info'],
-### },
-### {
-###     'name': 'volunteer_dilemma',
-###     'display_name': "Volunteer's Dilemma",
-###     'num_demo_participants': 3,
-###     'app_sequence': ['volunteer_dilemma', 'payment_info'],
-### },
-### {
-###     'name': 'cournot',
-###     'display_name': "Cournot Competition",
-###     'num_demo_participants': 2,
-###     'app_sequence': [
-###         'cournot', 'payment_info'
-###     ],
-### },
-### {
-###     'name': 'principal_agent',
-###     'display_name': "Principal Agent",
-###     'num_demo_participants': 2,
-###     'app_sequence': ['principal_agent', 'payment_info'],
-### },
-### {
-###     'name': 'dictator',
-###     'display_name': "Dictator Game",
-###     'num_demo_participants': 2,
-###     'app_sequence': ['dictator', 'payment_info'],
-### },
-### {
-###     'name': 'matching_pennies',
-###     'display_name': "Matching Pennies",
-###     'num_demo_participants': 2,
-###     'app_sequence': [
-###         'matching_pennies',
-###     ],
-### },
-### {
-###     'name': 'traveler_dilemma',
-###     'display_name': "Traveler's Dilemma",
-###     'num_demo_participants': 2,
-###     'app_sequence': ['traveler_dilemma', 'payment_info'],
-### },
-### {
-###     'name': 'bargaining',
-###     'display_name': "Bargaining Game",
-###     'num_demo_participants': 2,
-###     'app_sequence': ['bargaining', 'payment_info'],
-### },
-### {
-###     'name': 'common_value_auction',
-###     'display_name': "Common Value Auction",
-###     'num_demo_participants': 3,
-###     'app_sequence': ['common_value_auction', 'payment_info'],
-### },
-### {
-###     'name': 'stackelberg',
-###     'display_name': "Stackelberg Competition",
-###     'real_world_currency_per_point': 0.01,
-###     'num_demo_participants': 2,
-###     'app_sequence': [
-###         'stackelberg', 'payment_info'
-###     ],
-### },
-### {
-###     'name': 'bertrand',
-###     'display_name': "Bertrand Competition",
-###     'num_demo_participants': 2,
-###     'app_sequence': [
-###         'bertrand', 'payment_info'
-###     ],
-### },
-### {
-###     'name': 'real_effort',
-###     'display_name': "Real-effort transcription task",
-###     'num_demo_participants': 1,
-###     'app_sequence': [
-###         'real_effort',
-###     ],
-### },
-### {
-###     'name': 'lemon_market',
-###     'display_name': "Lemon Market Game",
-###     'num_demo_participants': 3,
-###     'app_sequence': [
-###         'lemon_market', 'payment_info'
-###     ],
-### },
-### {
-###     'name': 'public_goods_simple',
-###     'display_name': "Public Goods (simple version from tutorial)",
-###     'num_demo_participants': 3,
-###     'app_sequence': ['public_goods_simple', 'payment_info'],
-### },
-### {
-###     'name': 'trust_simple',
-###     'display_name': "Trust Game (simple version from tutorial)",
-###     'num_demo_participants': 2,
-###     'app_sequence': ['trust_simple'],
-### },
+LANGUAGE_CODE = 'en-us'
+TIME_ZONE = 'UTC'
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
 
+# Change 'default' database configuration with $DATABASE_URL.
+DATABASES['default'].update(dj_database_url.config(conn_max_age=500, ssl_require=True))
 
-otree.settings.augment_settings(globals())
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Allow all host headers
+ALLOWED_HOSTS = ['*']
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/2.0/howto/static-files/
+
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+STATIC_URL = '/static/'
+
+# Extra places for collectstatic to find static files.
+STATICFILES_DIRS = [
+    os.path.join(PROJECT_ROOT, 'static'),
+]
+
+# Simplified static file serving.
+# https://warehouse.python.org/project/whitenoise/
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())
