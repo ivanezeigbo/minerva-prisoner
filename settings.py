@@ -46,6 +46,11 @@ ROOMS = [
         'name': 'live_demo',
         'display_name': 'Room for live demo (no participant labels)',
     },
+    {
+    'name': 'dreber',
+    'display_name': 'Dreber Room class',
+    },
+         
 ]
 
 
