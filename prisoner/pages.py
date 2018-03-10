@@ -42,6 +42,8 @@ class Results(Page):
         }
 
 class InteractionOverWaitPage(WaitPage):
+    wait_for_all_groups = True
+
     def is_displayed(self):
         return self.round_number % 5 == 0
 
@@ -51,5 +53,6 @@ page_sequence = [
     NameWaitPage,
     Decision,
     ResultsWaitPage,
-    Results
+    Results,
+    InteractionOverWaitPage
 ]
