@@ -43,7 +43,8 @@ class Results(Page):
 
 class InteractionOverWaitPage(WaitPage):
     wait_for_all_groups = True
-
+    title_text = "The interaction is now over."
+    body_text = "Wait until all groups are done so you can be paired with someone new."
     def is_displayed(self):
         return self.round_number % 5 == 0
 
