@@ -38,8 +38,16 @@ class Results(Page):
             'my_decision': self.player.decision_label(),
             'other_player_decision': opponent.decision_label(),
             'same_choice': self.player.cooperate == opponent.cooperate,
-            'total_payoff': sum([p.payoff for p in self.player.in_all_rounds()]),
+            'total_payoff': sum([p.payoff for p in self.player.in_rounds(self.round_number - ((self.round_number - 1) % 5), self.round_number)]),
+            # TODO: total payoff only for that specific person FIX!
         }
+
+class InteractionOverWaitPage(WaitPage):
+    wait_for_all_groups = True
+    title_text = "The interaction is now over."
+    body_text = "Wait until all groups are done so you can be paired with someone new."
+    def is_displayed(self):
+        return self.round_number % 5 == 0
 
 
 page_sequence = [
@@ -47,5 +55,6 @@ page_sequence = [
     NameWaitPage,
     Decision,
     ResultsWaitPage,
-    Results
+    Results,
+    InteractionOverWaitPage
 ]

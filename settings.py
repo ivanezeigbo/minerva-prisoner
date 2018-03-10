@@ -24,10 +24,10 @@ SESSION_CONFIGS = [
                    },
 
                    {
-                   'name': 'prisoner_punish',
+                   'name': 'prisoner_treatment',
                    'display_name': "Prisoner's Dilemma Treatment",
                    'num_demo_participants': 2,
-                   'app_sequence': ['prisoner'],
+                   'app_sequence': ['prisoner_treatment'],
                    },
     
 

@@ -12,16 +12,16 @@ payoffs.
 
 
 class Constants(BaseConstants):
-    name_in_url = 'prisoner'
+    name_in_url = 'prisoner_treatment'
     players_per_group = 2
     num_rounds = 10
 
-    instructions_template = 'prisoner/Instructions.html'
+    instructions_template = 'prisoner_treatment/Instructions.html'
 
     # payoff if 1 player defects and the other cooperates""",
     betray_payoff = c(300)
     betrayed_payoff = c(0)
-    
+
     # payoff if both players cooperate or both defect
     both_cooperate_payoff = c(200)
     both_defect_payoff = c(100)
@@ -30,7 +30,6 @@ class Constants(BaseConstants):
     punisher_payoff = c(-100)
     punished_payoff = c(-400)
     both_punish_payoff = c(-400)
-
 
 
 class Subsession(BaseSubsession):
@@ -51,9 +50,9 @@ class Player(BasePlayer):
 
     cooperate = models.IntegerField(
         choices=[
-            [0, 'Defect'],
-            [1, 'Cooperate']
-            [2, 'Punish']
+            (0, 'Defect'),
+            (1, 'Cooperate'),
+            (2, 'Punish')
         ]
     )
     
@@ -62,9 +61,12 @@ class Player(BasePlayer):
     
 
     def decision_label(self):
-        if self.cooperate:
+        if self.cooperate == 1:
             return 'cooperate'
-        return 'defect'
+        elif self.cooperate == 0:
+            return 'defect'
+        else:
+            return 'punish'
 
     def other_player(self):
         return self.get_others_in_group()[0]
@@ -76,14 +78,14 @@ class Player(BasePlayer):
                 {
                     1: Constants.both_cooperate_payoff,
                     0: Constants.betrayed_payoff,
-                    2: Constants.punished_payoff,
+                    2: Constants.punished_payoff
                 },
             0:
                 {
                     1: Constants.betray_payoff,
                     0: Constants.both_defect_payoff,
                     2: Constants.punished_payoff,
-                }
+                },
             2:
                 {
                     1: Constants.punisher_payoff,
@@ -91,8 +93,7 @@ class Player(BasePlayer):
                     2: Constants.both_punish_payoff,
                 },
         }
-
-        print ("Hey I'm here")
-        print (self.decision_label())
+        
+        
         self.payoff = payoff_matrix[self.cooperate][self.other_player().cooperate]
 
