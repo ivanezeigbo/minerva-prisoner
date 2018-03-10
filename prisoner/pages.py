@@ -39,6 +39,7 @@ class Results(Page):
             'other_player_decision': opponent.decision_label(),
             'same_choice': self.player.cooperate == opponent.cooperate,
             'total_payoff': sum([p.payoff for p in self.player.in_all_rounds()]),
+            # TODO: total payoff only for that specific person FIX!
         }
 
 class InteractionOverWaitPage(WaitPage):
