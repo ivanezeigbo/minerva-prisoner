@@ -21,10 +21,16 @@ class Constants(BaseConstants):
     # payoff if 1 player defects and the other cooperates""",
     betray_payoff = c(300)
     betrayed_payoff = c(0)
-
+    
     # payoff if both players cooperate or both defect
     both_cooperate_payoff = c(200)
     both_defect_payoff = c(100)
+
+    #payoff if one player decides to punish the other
+    punisher_payoff = c(-100)
+    punished_payoff = c(-400)
+    both_punish_payoff = c(-400)
+
 
 
 class Subsession(BaseSubsession):
@@ -43,10 +49,11 @@ class Group(BaseGroup):
 class Player(BasePlayer):
     
 
-    cooperate = models.BooleanField(
+    cooperate = models.IntegerField(
         choices=[
-            [False, 'Defect'],
-            [True, 'Cooperate']
+            [0, 'Defect'],
+            [1, 'Cooperate']
+            [2, 'Punish']
         ]
     )
     
@@ -65,16 +72,24 @@ class Player(BasePlayer):
     def set_payoff(self):
 
         payoff_matrix = {
-            True:
+            1:
                 {
-                    True: Constants.both_cooperate_payoff,
-                    False: Constants.betrayed_payoff
+                    1: Constants.both_cooperate_payoff,
+                    0: Constants.betrayed_payoff,
+                    2: Constants.punished_payoff,
                 },
-            False:
+            0:
                 {
-                    True: Constants.betray_payoff,
-                    False: Constants.both_defect_payoff
+                    1: Constants.betray_payoff,
+                    0: Constants.both_defect_payoff,
+                    2: Constants.punished_payoff,
                 }
+            2:
+                {
+                    1: Constants.punisher_payoff,
+                    0: Constants.punisher_payoff,
+                    2: Constants.both_punish_payoff,
+                },
         }
 
         print ("Hey I'm here")

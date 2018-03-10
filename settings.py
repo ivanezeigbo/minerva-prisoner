@@ -22,6 +22,13 @@ SESSION_CONFIGS = [
                    'num_demo_participants': 2,
                    'app_sequence': ['prisoner'],
                    },
+
+                   {
+                   'name': 'prisoner_punish',
+                   'display_name': "Prisoner's Dilemma Treatment",
+                   'num_demo_participants': 2,
+                   'app_sequence': ['prisoner'],
+                   },
     
 
 ]
@@ -38,17 +45,12 @@ USE_POINTS = True
 
 ROOMS = [
     {
-        'name': 'econ101',
-        'display_name': 'Econ 101 class',
-        'participant_label_file': '_rooms/econ101.txt',
-    },
-    {
         'name': 'live_demo',
         'display_name': 'Room for live demo (no participant labels)',
     },
     {
-    'name': 'dreber',
-    'display_name': 'Dreber Room class',
+         'name': 'dreber',
+         'display_name': 'Dreber Room class',
     },
          
 ]

@@ -41,10 +41,6 @@ class Results(Page):
             'total_payoff': sum([p.payoff for p in self.player.in_all_rounds()]),
         }
 
-class InteractionOverWaitPage(WaitPage):
-    def is_displayed(self):
-        return self.round_number % 5 == 0
-
 
 page_sequence = [
     Introduction,

@@ -2,7 +2,7 @@
 {% load staticfiles otree %}
 
 {% block title %}
-    You are currently playing with {{ opponent_name }}
+    You are currently playing with {{ opponent_name }} \n
     Your Choice
 {% endblock %}
 
@@ -23,15 +23,16 @@
     <div class="form-group required">
         <table class="table table-bordered text-center" style="width: auto; margin: auto">
             <tr>
-                <th colspan="2" rowspan="2"></th>
-                <th colspan="2">The Other Participant</th>
+                <th colspan="3" rowspan="3"></th>
+                <th colspan="3">The Other Participant</th>
             </tr>
             <tr>
                 <th>Cooperate</th>
                 <th>Defect</th>
+                <th>Punish</th>
             </tr>
             <tr class="highlight-row-on-hover">
-                <th rowspan="2"><span class="rotate90">You</span></th>
+                <th rowspan="3"><span class="rotate90">You</span></th>
                 <td><button name="cooperate" value="True" class="btn btn-primary btn-large">I will cooperate</button></td>
                 <td>{{Constants.both_cooperate_payoff}}, {{Constants.both_cooperate_payoff}}</td>
                 <td>{{ Constants.betrayed_payoff }}, {{Constants.betray_payoff}}</td>
