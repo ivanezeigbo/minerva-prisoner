@@ -38,7 +38,7 @@ class Results(Page):
             'my_decision': self.player.decision_label(),
             'other_player_decision': opponent.decision_label(),
             'same_choice': self.player.cooperate == opponent.cooperate,
-            'total_payoff': sum([p.payoff for p in self.player.in_all_rounds()]),
+            'total_payoff': sum([p.payoff for p in self.player.in_rounds(self.round_number - ((self.round_number - 1) % 5), self.round_number)]),
             # TODO: total payoff only for that specific person FIX!
         }
 
