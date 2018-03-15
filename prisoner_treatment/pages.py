@@ -52,7 +52,6 @@ class InteractionOverWaitPage(WaitPage):
 
 page_sequence = [
     Introduction,
-    NameWaitPage,
     Decision,
     ResultsWaitPage,
     Results,
