@@ -20,11 +20,11 @@ class Constants(BaseConstants):
 
     # payoff if 1 player defects and the other cooperates""",
     betray_payoff = c(300)
-    betrayed_payoff = c(0)
+    betrayed_payoff = c(-200)
 
     # payoff if both players cooperate or both defect
-    both_cooperate_payoff = c(200)
-    both_defect_payoff = c(100)
+    both_cooperate_payoff = c(100)
+    both_defect_payoff = c(0)
 
 
 class Subsession(BaseSubsession):
