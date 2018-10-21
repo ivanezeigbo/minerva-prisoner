@@ -34,6 +34,8 @@ You can replace ``helloworld`` with your desired project name.
 
     $ heroku create
     $ git push heroku master
+    
+    $ heroku addons:create heroku-redis:premium-0
 
     $ heroku run python manage.py migrate
 
