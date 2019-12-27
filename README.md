@@ -26,6 +26,8 @@ Using this template to create a new Django app is easy::
 
 You can replace ``helloworld`` with your desired project name.
 
+For all Heroku setup, you can follow instructions on this page: https://github.com/oTree-org/otree-docs/blob/143a6ab7b61d54ec2be1a8bc09515d78e0b07c71/source/server/heroku.rst#heroku-setup-option-2
+
 ## Deployment to Heroku
 
     $ git init
