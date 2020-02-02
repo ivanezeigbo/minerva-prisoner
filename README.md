@@ -30,23 +30,23 @@ You can replace ``helloworld`` with your desired project name.
 
 Log into heroku:
 
-    `$ heroku login`
+    $ heroku login
 
 If you don't have an existing heroku web app created, you can create one with the following command:
 
-    `$ heroku create WEBAPP_NAME`
+    $ heroku create WEBAPP_NAME
 
 To set the remote origin to your web app on heroku, enter the following command:
     
-    `$ heroku git:remote WEBAPP_NAME`
+    $ heroku git:remote WEBAPP_NAME
 
 You can also confirm this remote location with the command:
 
-    `$ git remote -v`
+    $ git remote -v
     
 It is recommended to have the latest otree version. You can do that with the following command:
 
-    `$ pip3 install -U otree`
+    $ pip3 install -U otree
 
 For more info: https://github.com/oTree-org/otree-docs/blob/143a6ab7b61d54ec2be1a8bc09515d78e0b07c71/source/server/heroku.rst#heroku-setup-option-2
 
@@ -58,7 +58,7 @@ Ensure that you have updated your Python version in the `runtime.txt` file befor
 
 To check which Python version is installed, enter the command
 
-    `$ cat runtime.txt`
+    $ cat runtime.txt
 
 To deploy heroku, follow the commands below:
 
@@ -71,9 +71,9 @@ To deploy heroku, follow the commands below:
     
     $ heroku addons:create heroku-redis:premium-0
     
-    $ heroku run otree resetdb
+    $ heroku run "otree resetdb"
 
-    $ heroku run python manage.py migrate
+    $ heroku open
 
 See also, a [ready-made application](https://github.com/heroku/python-getting-started), ready to deploy.
 
