@@ -66,7 +66,6 @@ To deploy heroku, follow the commands below:
     $ git add -A
     $ git commit -m "Initial commit"
 
-    $ heroku create
     $ git push heroku master
     
     $ heroku addons:create heroku-redis:premium-0
