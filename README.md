@@ -38,6 +38,8 @@ For all Heroku setup, you can follow instructions on this page: https://github.c
     $ git push heroku master
     
     $ heroku addons:create heroku-redis:premium-0
+    
+    $ heroku run otree resetdb
 
     $ heroku run python manage.py migrate
 
