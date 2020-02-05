@@ -8,11 +8,11 @@ class Introduction(Page):
     form_model = 'player'
     form_fields = ['player_name']
     def is_displayed(self):
-        return self.round_number == 1
+        return self.subsession.round_number == 1
 
 class NameWaitPage(WaitPage):
     def is_displayed(self):
-        return self.round_number == 1
+        return self.subsession.round_number == 1
 
 class Decision(Page):
     form_model = 'player'
@@ -33,12 +33,13 @@ class ResultsWaitPage(WaitPage):
 class Results(Page):
     def vars_for_template(self):
         opponent = self.player.other_player()
-        
+        print ('subse is', self.group.max_round_num)
+        print ('self.group is', self.group.max_round_num)
         return {
             'my_decision': self.player.decision_label(),
             'other_player_decision': opponent.decision_label(),
             'same_choice': self.player.cooperate == opponent.cooperate,
-            'total_payoff': sum([p.payoff for p in self.player.in_rounds(self.round_number - ((self.round_number - 1) % 5), self.round_number)]),
+            'total_payoff': sum([p.payoff for p in self.player.in_rounds(self.round_number - ((self.round_number - 1) % self.group.new_round_num), self.round_number)]),
             # TODO: total payoff only for that specific person FIX!
         }
 
@@ -47,7 +48,7 @@ class InteractionOverWaitPage(WaitPage):
     title_text = "The interaction is now over."
     body_text = "Wait until all groups are done so you can be paired with someone new."
     def is_displayed(self):
-        return self.round_number % 5 == 0
+        return self.subsession.round_number >= self.group.max_round_num 
 
 
 page_sequence = [
