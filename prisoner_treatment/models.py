@@ -14,7 +14,7 @@ payoffs.
 class Constants(BaseConstants):
     name_in_url = 'prisoner_treatment'
     players_per_group = 2
-    num_rounds = 10
+    num_rounds = 15
 
     instructions_template = 'prisoner_treatment/Instructions.html'
 
@@ -36,6 +36,7 @@ class Subsession(BaseSubsession):
     #randomize every 5 rounds
     def creating_session(self):
         if self.round_number % 5 == 1:
+            print(self.round_number)
             self.group_randomly()
         else:
             self.group_like_round(self.round_number - 1)
