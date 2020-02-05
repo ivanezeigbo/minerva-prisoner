@@ -14,7 +14,7 @@ payoffs.
 class Constants(BaseConstants):
     name_in_url = 'prisoner'
     players_per_group = 2
-    num_rounds = 10
+    num_rounds = 15
 
     instructions_template = 'prisoner/Instructions.html'
 
@@ -28,16 +28,35 @@ class Constants(BaseConstants):
 
 
 class Subsession(BaseSubsession):
+    
     #randomize every 5 rounds
     def creating_session(self):
-        if self.round_number % 5 == 1:
+        all_set = True
+        for g in self.get_groups():            
+            if g.round_number != 1:
+                g.max_round_num = g.in_round(g.round_number - 1).max_round_num
+                g.new_round_num = g.in_round(g.round_number - 1).new_round_num
+                print('this one comes first', g.round_number, 'and round', g.new_round_num, 'and max', g.max_round_num)
+                if g.round_number <= g.max_round_num:                
+                    all_set = False
+                    print('it is false')
+        if all_set:
+            print('true dat')
             self.group_randomly()
-        else:
-            self.group_like_round(self.round_number - 1)
+            for g in self.get_groups():
+                m = 1
+                while random.random() <= 0.75:
+                    m += 1
+                g.max_round_num = m + g.round_number - 1
+                g.new_round_num = m
+                print('for', g.round_number, 'round is', g.new_round_num, 'and max is', g.max_round_num)
+       
 
+    
 
 class Group(BaseGroup):
-    pass
+    max_round_num = models.IntegerField()
+    new_round_num = models.IntegerField()
 
 
 class Player(BasePlayer):
